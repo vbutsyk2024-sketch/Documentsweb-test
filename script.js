@@ -1,114 +1,62 @@
-// 1. БАЗОВИЙ КЛАС
-class Product {
-  constructor(id, title, price) {
-    this.id = id;
-    this.title = title;
-    this.price = price;
-  }
-
-  getInfo() {
-    return `[ID: ${this.id}] ${this.title} — ${this.price} грн`;
-  }
+// ==========================================
+// 1. ІМЕНОВАНА ФУНКЦІЯ (Function Declaration)
+// ==========================================
+function greet(name) {
+  return `Привіт, ${name}!`;
 }
 
-// 2. УСПАДКУВАННЯ (Електроніка)
-class Electronics extends Product {
-  constructor(id, title, price, warrantyMonths) {
-    super(id, title, price);
-    this.warrantyMonths = warrantyMonths;
-  }
+console.log("--- 1. Named Function ---");
+console.log(greet("Світлана"));
 
-  getInfo() {
-    return `${super.getInfo()} (Гарантія: ${this.warrantyMonths} міс.)`;
-  }
+
+// ==========================================
+// 2. ФУНКЦІОНАЛЬНИЙ ВИРАЗ (Function Expression)
+// ==========================================
+const multiply = function(a, b) {
+  return a * b;
+};
+
+console.log("\n--- 2. Function Expression ---");
+console.log("Результат множення (4 * 5):", multiply(4, 5));
+
+
+// ==========================================
+// 3. СТРІЛКОВА ФУНКЦІЯ (Arrow Function)
+// ==========================================
+const square = (x) => x * x;
+
+console.log("\n--- 3. Arrow Function ---");
+console.log("Квадрат числа 6:", square(6));
+
+
+// ==========================================
+// 4. ЗАМИКАННЯ (Closure)
+// ==========================================
+function createCounter() {
+  let count = 0;
+  return function() {
+    count++;
+    return count;
+  };
 }
 
-// 3. УСПАДКУВАННЯ (Одяг)
-class Clothing extends Product {
-  constructor(id, title, price, size) {
-    super(id, title, price);
-    this.size = size;
-  }
+const counter = createCounter();
 
-  getInfo() {
-    return `${super.getInfo()} (Розмір: ${this.size})`;
-  }
+console.log("\n--- 4. Closure (Замикання) ---");
+console.log("Лічильник 1 виклик:", counter()); // 1
+console.log("Лічильник 2 виклик:", counter()); // 2
+console.log("Лічильник 3 виклик:", counter()); // 3
+
+
+// ==========================================
+// 5. КОЛБЕК-ФУНКЦІЯ (Callback)
+// ==========================================
+function processData(number, callback) {
+  const result = number * 2;
+  callback(result);
 }
 
-// 4. КЛАС КОШИКА
-class Cart {
-  constructor() {
-    this.items = [];
-  }
-
-  addProduct(product) {
-    this.items.push(product);
-    console.log(`Товар "${product.title}" додано в кошик.`);
-  }
-
-  removeProduct(productId) {
-    this.items = this.items.filter(item => item.id !== productId);
-    console.log(`Товар з ID ${productId} видалено.`);
-  }
-
-  getTotalPrice() {
-    return this.items.reduce((total, item) => total + item.price, 0);
-  }
-
-  showCart() {
-    console.log("\n--- Вміст кошика ---");
-    if (this.items.length === 0) {
-      console.log("Кошик порожній.");
-    } else {
-      this.items.forEach(item => console.log(item.getInfo()));
-      console.log(`Загальна вартість: ${this.getTotalPrice()} грн`);
-    }
-    console.log("--------------------\n");
-  }
-}
-
-// 5. КЛАС КОРИСТУВАЧА
-class User {
-  constructor(id, name, email) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.cart = new Cart();
-  }
-
-  checkout() {
-    if (this.cart.items.length === 0) {
-      console.log(`УВАГА: Кошик користувача ${this.name} порожній!`);
-      return;
-    }
-    console.log(`\nЗамовлення користувача ${this.name} (${this.email}) оформлено!`);
-    console.log(`До сплати: ${this.cart.getTotalPrice()} грн`);
-    this.cart.items = []; // Очищення кошика після замовлення
-  }
-}
-
-// === ДЕМОНСТРАЦІЯ РОБОТИ ===
-console.log("=== ЗАПУСК СИСТЕМИ ОНЛАЙН-МАГАЗИНУ ===");
-
-// Створення товарів
-const phone = new Electronics(1, "Смартфон Samsung", 22000, 24);
-const laptop = new Electronics(2, "Ноутбук ASUS", 38000, 12);
-const shirt = new Clothing(3, "Сорочка", 1200, "L");
-
-// Створення покупця
-const buyer = new User(101, "Іван Петренко", "ivan@example.com");
-
-// Операції з кошиком
-buyer.cart.addProduct(phone);
-buyer.cart.addProduct(laptop);
-buyer.cart.addProduct(shirt);
-
-buyer.cart.showCart();
-
-// Видалення товару та перевірка
-buyer.cart.removeProduct(2);
-buyer.cart.showCart();
-
-// Оформлення замовлення
-buyer.checkout();
-buyer.cart.showCart();
+console.log("\n--- 5. Callback Function ---");
+processData(10, function(output) {
+  console.log("Оброблене значення з колбека:", output);
+});
